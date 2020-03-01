@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="assets/img/favicon.ico">
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <title>
+    Capital One Summit
+  </title>
+  <!-- Bootstrap core CSS -->
+  <link href="/assets/css/bootstrap.css" rel="stylesheet">
+
+  <!-- Custom styles for this page -->
+  <link href="/assets/css/ionicons.min.css" rel="stylesheet">
+  <link href="/assets/css/style.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <script src="/assets/js/ie10-viewport-bug-workaround.js"></script>
+
+</head>
+
+<body>
+  <div id="h" class="background">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1 centered">
+          <h1>
+            <table>
+            </table> What are you craving?
+          </h1>
+          <div class="mtb">
+            <form id="main-form" role="form" action="/search" method="post" enctype="plain">
+              <div class="col-md-6">
+                <input id="searchterm" type="text" name="term" class="text-input"
+                  placeholder="Mexican, Chinese, Burgers...">
+              </div>
+              <div class="col-md-6">
+                <input type="text" id="location" name="location" class="text-input" placeholder="address, city, state, zip..." required>
+              </div>
+              <button class='btn btn-conf btn-blue' type="submit"> Take me there! </button>
+            </form>
+          </div>
+          <!--/mt-->
+          <h5> Discover a new experience. </h5>
+          <h6> Created by <a href="https://www.linkedin.com/in/nicholas-l-863258118/"> Nicholas Lin. </a> Powered by <a
+              href="https://www.yelp.com/developers"> Yelp's Fusion API. </a> </h6>
+        </div>
+      </div>
+      <!--/row-->
+    </div>
+    <!--/container-->
+  </div><!-- /H -->
+
+  <!--TWO MAIN JS SCRIPTS-->
+  <script src= "./assets/js/geolocation.js"></script>
+  <script src = "assets/js/index.js"></script>
+
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZov1f1Cpq5p5HyPpgz9aoGIqWYr4ZJU0"></script>
+  <script src="/assets/js/jquery.min.js"></script>
+  <script src="/assets/js/bootstrap.min.js"></script>
+  <script src="/assets/js/retina-1.1.0.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- For Rating Stars CSS -->
+    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="styleSheet">
+
+    <!-- BootStrap Dependencies -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="icon" href="assets/img/favicon.ico">
+
+    <!-- Custom styles for this page -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="spacer5"></div>
+        <div class="row">
+            <div class="col">
+                <h3>Your Results</h3>
+            </div>
+            <div class="col">
+                <a href="./index.html" class="btn btn-primary btn-md " style="float: right;" tabindex="-1"
+                    role="button">Make Another Search</a>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm">
+                <button type="button" class="btn btn-sm btn-primary" disabled>Only Open</button>
+            </div>
+            <div class="col-sm">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        Action
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Separated link</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <button type="button" class="btn btn-sm btn-primary" disabled>Primary
+                    button</button>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col">
+                <div class="panel panel-primary" id="result_panel">
+                    <div class="panel-heading">
+                    </div>
+                    <div class="panel-body">
+                        
+                        <ul id="main-list" class="list-group border">
+                            <!--Javascript generates a list of businesses here-->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+
+    <!--The div element for the map -->
+
+    <script>
+        //List of businesses from API
+        var businesses;
+        //Dictionary of map markers key: business ID, Value:Marker
+        var gmarkers = {};
+        //Array of URL parameters
+        var urlParams = getURLParams();
+        //Google Map object
+        var map = null;
+
+        
+        // Get ratings
+        function getRatings(BID, rating) {
+            // Total Stars
+            const starsTotal = 5;
+            const starPercentage = (rating / starsTotal) * 100;
+            // Round to nearest 10
+            const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
+            // Set width of stars-inner to percentage
+            document.querySelector('#B' + BID.toString() + ` .stars-inner`).style.width = starPercentageRounded;
+            // Add number rating
+            //document.querySelector('#B' + BID.toString() + ` .number-rating`).innerHTML = rating;
+        }
+
+        //Initializes Google Map
+        function initMap() {
+            // The location of Uluru
+            var lat = parseFloat(urlParams[0]);
+            var lng = parseFloat(urlParams[1]);
+            var uluru = { lat: lat, lng: lng };
+            // The map, centered at Uluru
+            map = new google.maps.Map(
+                document.getElementById('map'), { zoom: 15, center: uluru});
+            // The marker, positioned at Uluru
+
+            //Scale custom marker icon
+            var icon = {
+                url: "./assets/img/bluePin.png", // url
+                scaledSize: new google.maps.Size(35, 56.4), // scaled size
+                origin: new google.maps.Point(0,0), // origin
+                anchor: new google.maps.Point(17.5,56.4) // anchor
+            };
+            addMarker({
+                    location: uluru,
+                    content: '<h5>You are here!</h5>',
+                    id: 0,
+                    iconImage: icon
+                });
+
+            var marker = gmarkers[0];
+            google.maps.event.trigger(marker, 'click');
+            
+        }
+
+        //This function processes the URL parameters
+        function getURLParams() {
+            var queryString = decodeURIComponent(window.location.search);
+            queryString = queryString.substring(1);
+            var queries = queryString.split("&");
+            return queries;
+        }
+
+        //This function processes API data and adds each business to the list and creates a marker of the map
+        function addToList(apiData) {
+            businesses = apiData.data.businesses
+            for (var i = 0; i < businesses.length; i++) {
+                var b = businesses[i]
+                var data = {
+                    location: { lat: b.coordinates.latitude, lng: b.coordinates.longitude },
+                    name: b.name,
+                    id: b.id,
+                    content: '<h6>' + b.name + '</h6>',
+                }
+                addMarker(data);
+                createListItem(b);
+            }
+        }
+        
+        //Adds markers to the map
+        function addMarker(props){
+            var marker = new google.maps.Marker({
+            position:props.location,
+            map:map,
+            animation: google.maps.Animation.DROP,
+            });
+            gmarkers[props.id] = marker;
+            marker.addListener('click', toggleBounce);
+            //Adds a bounce animation to markers
+            function toggleBounce() {
+                if (marker.getAnimation() !== null) {
+                    marker.setAnimation(null);
+                } else {
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+                    //Sets bounce for certain amount of time
+                    setTimeout(function() {
+                    marker.setAnimation(null)
+                    }, 2100);
+                }
+            }
+            // Check for customicon
+            if(props.iconImage){
+            // Set icon image
+            marker.setIcon(props.iconImage);
+            }
+
+            // Check content and creates infowindow for marker
+            if(props.content){
+            var infoWindow = new google.maps.InfoWindow({
+                content:props.content
+            });
+
+            //Info pop up
+            marker.addListener('click', function(){
+                infoWindow.open(map, marker);
+                setTimeout(function() {
+                    infoWindow.close()
+                    }, 10000);
+            });
+            }
+        }
+
+        //Recenters the map and selects appropriate marker based on the business selected
+        function selectBusiness(rawdata){
+            var data = rawdata.split("&");
+            map.setCenter(new google.maps.LatLng(data[0], data[1]));
+            var marker = gmarkers[data[2]];
+            google.maps.event.trigger(marker, 'click');
+        }
+
+        //Creates a media object containing business information and inserts it into the unordered list of the HTML
+        function createListItem(b) {
+            var lat = b.coordinates.latitude;
+            var long = b.coordinates.longitude;
+            var html = [
+                            '<li class="list-group-item" onmousedown="selectBusiness(' + "'" + lat + "&" + long + "&" + b.id + "'" + ')">',
+                                '<div class="media">',
+                                    '<img src=' + b.image_url +' class="mr-3" style="width:60px">',
+                                    '<div class="media-body">',
+                                        '<div class="container">',
+                                            '<div class="row">',
+                                                '<div class="col-md">',
+                                                    '<div class="row">',
+                                                        '<h5>'+ '<a href=' + b.url + '>' + b.name +  '</a></h5>',
+                                                    '</div>',
+                                                    '<div class="row">',
+                                                        b.categories[0].title,
+                                                    '</div>',
+                                                    '<div class="row" id=B'+b.id+'>',
+                                                            '<div class="stars-outer">',
+                                                                '<div class="stars-inner"></div>',
+                                                            '</div>',
+                                                        '<span class="number-rating">' + " " +b.rating+'</span>',
+                                                    '</div>',
+                                                '</div>',
+                                                '<div class="col-sm">',
+                                                    '<div class="row justify-content-md-end">',
+                                                        '<small>'+ b.location.address1 + '</small>',
+                                                    '</div>',
+                                                    '<div class="row justify-content-md-end">',
+                                                        '<small>'+ b.display_phone + '</small>',
+                                                    '</div>',
+                                                    '<div class="row justify-content-md-end font-weight-bold">',
+                                                        b.price,
+                                                    '</div>',
+                                                '</div>',
+                                            '</div>',
+                                        '</div>',
+                                    '</div>',
+                                  '</div>',                                  
+                            '</li>'
+            ].join("\n");
+            // html: '<div ...>\n<h1 ...>Constructing HTML Elements<h1>\n</div>'
+            $('#main-list').append(html);
+            getRatings(b.id, b.rating);
+        }
+
+        //Gets business information based on search parameters
+        axios.get('https://cors-anywhere.herokuapp.com/' + 'https://api.yelp.com/v3/businesses/search', {
+            headers: {
+                Authorization: `Bearer 4AqxzDTp64YsnrAXrp0AiMC_39WCTXKcZT9doX3_5UwgF7E3UNjNW5bWeI7SsATBpotoOknHOOyhRIEefZTikEos9M27oprKc1N_JLmU7mVv6HBrSRsy6y8WDeVRXnYx`
+            },
+            params: {
+                latitude: urlParams[0],
+                longitude: urlParams[1],
+                term: urlParams[2],
+            }
+        })
+            .then((res) => {
+                //Clear markers?
+                addToList(res)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    </script>
+
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZov1f1Cpq5p5HyPpgz9aoGIqWYr4ZJU0&callback=initMap">
+        </script>
+
+</body>
+
+</html>
