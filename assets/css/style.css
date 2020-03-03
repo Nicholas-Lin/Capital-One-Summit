@@ -1,33 +1,56 @@
+/**
+ * FileName: style.css
+ * Author: Nicholas Lin
+ * Date: 3/3/20
+ * Description: Provide main styling for html pages
+ * /
+
+
 /* Import fonts */
 @import url(http://fonts.googleapis.com/css?family=Lato:300,400,700,900);
 
+.full-height { display: flex; flex-direction: column; height: 100%; }
+.fill-height { flex-grow: 1; width: 100%; }
+.doborder { border: 1px solid; border-color: #ddd; border-radius: 4px; }
+.controlsdiv { display: table; width: 100%; }
 
 * {
 	margin: 0;
 	padding: 0px;
     font-family: 'Lato', sans-serif;
 }
-/*
-html,body,.container {
-    height:100%;
+/*Enables scrolling for lists*/
+.list-group{
+	/*Make scalable height*/
+    max-height: 500px;
+	margin-bottom: 10px;
+    overflow:scroll;
+    -webkit-overflow-scrolling: touch;
 }
-.container {
-    display:table;
-    width: 100%;
-    margin-top: -50px;
-    padding: 50px 0 0 0; 
-    box-sizing: border-box;
+.card-horizontal {
+    display: flex;
+    flex: 1 1 auto;
 }
 
-.row {
+
+/*Uncomment for fill height*/
+/*
+body {
     height: 100%;
-    display: table-row;
+    width: 100%;
+    position: absolute;
 }
-.row .no-float {
-  display: table-cell;
-  float: none;
-}
-*/
+
+.container-fluid,
+.row-fluid { height: inherit; }
+
+.background{
+	background-image: 
+	linear-gradient(
+      rgba(176, 233, 255, 0.826), 
+	  rgba(163, 7, 7, 0.826)
+    )
+}*/
 
 .switch {
 	position: relative;
@@ -126,18 +149,7 @@ html,body,.container {
 	color: #f8ce0b;
   }
 
-/*Enables scrolling for lists*/
-.list-group{
-	/*Make scalable height*/
-    max-height: 500px;
-	margin-bottom: 10px;
-    overflow:scroll;
-    -webkit-overflow-scrolling: touch;
-}
-.card-horizontal {
-    display: flex;
-    flex: 1 1 auto;
-}
+
 
 .bg {
 	/* The image used */
@@ -351,14 +363,7 @@ input {
 	background-size: cover;
 }
 
-/*
-.background{
-	background-image: 
-	linear-gradient(
-      rgba(176, 233, 255, 0.826), 
-	  rgba(255, 255, 255, 0.826)
-    )
-}*/
+
 
 /* HEADER SECTION */
 #h {

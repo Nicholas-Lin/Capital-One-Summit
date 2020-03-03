@@ -1,3 +1,10 @@
+<!--
+FileName: search.html
+Author: Nicholas Lin
+Date: 3/3/20
+Description: Search results page of web app
+-->
+
 <!DOCTYPE html>
 <html>
 
@@ -21,21 +28,15 @@
         crossorigin="anonymous"></script>
         
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <link rel="icon" href="assets/img/favicon.ico">
+    <link rel="icon" href="./assets/img/favicon.ico">
 
     <!-- Custom styles for this page -->
-    <link href="/assets/css/style.css" rel="stylesheet">
+    <link href="./assets/css/style.css" rel="stylesheet">
 </head>
 
 <body>
-    <div class="container-fluid background">
-        <div class="spacer5"></div>
-        <div class="row">
-            <div class="col" >
-                <h1>Your Results</h1>
-            </div>
-        </div>
-        
+    <header>Your Results</header>
+    <div class="container-fluid">
         <div class="row">
             <div class="col-sm">
                 <h5>Open Now:</h5>
@@ -73,11 +74,11 @@
                 <div class="panel panel-primary" id="result_panel">
                     <div class="panel-heading">
                     </div>
-                    <div class="panel-body">
-                        
+                    <div class="panel">
                         <ul id="main-list" class="list-group border">
                             <!--Javascript generates a list of businesses here-->
                         </ul>
+                        <small>"Results Here"</small>
                     </div>
                 </div>
             </div>
@@ -103,8 +104,8 @@
         var map = null;
         var currentLocation;
         var distanceInfo;
+        var listNumber = 0;
         getData();
-
         
 
         $('#open-switch').change(function () {
@@ -128,6 +129,7 @@
                     gmarkers[key].setMap(null);
                 }
             }
+            listNumber = 0;
             $('#main-list').empty()
         }
         
@@ -225,6 +227,7 @@
             .catch((err) => {
                 console.log(err)
             })*/
+            
             businesses = apiData.data.businesses
             for (var i = 0; i < businesses.length; i++) {
                 var b = businesses[i]
@@ -235,7 +238,7 @@
                     location: businessLocation,
                     name: b.name,
                     id: b.id,
-                    content: '<a href='+ b.url +'>' + b.name + '</a>'
+                    content: '<h6><a href='+ b.url +'>' + b.name + '</a></h6>'
                 }
                 addMarker(data);
                 createListItem(b);
@@ -303,6 +306,7 @@
         function createListItem(b) {
             var latitude = b.coordinates.latitude;
             var longitude = b.coordinates.longitude;
+            listNumber++;
             
             var html = [
                             '<li id=B'+b.id+' class="list-group-item" onmousedown="selectBusiness(' + "'" + latitude + "&" + longitude + "&" + b.id + "'" + ')">',
@@ -313,7 +317,7 @@
                                             '<div class="row">',
                                                 '<div class="col-md">',
                                                     '<div class="row">',
-                                                        '<h5>'+ '<a href=' + b.url + '>' + b.name +  '</a></h5>',
+                                                        '<h5>'+ '<a href=' + b.url + '>' + listNumber + ". " +b.name +  '</a></h5>',
                                                     '</div>',
                                                     '<div class="row">',
                                                         b.categories[0].title,
@@ -355,14 +359,16 @@
         
         //Gets business information based on search parameters
         
-        function getData(){
+        function getData(){      
             axios.get('https://cors-anywhere.herokuapp.com/' + 'https://api.yelp.com/v3/businesses/search', 
                 customParams
             )
                 .then((res) => {
+                    
                     addToList(res)
                 })
                 .catch((err) => {
+                    
                     console.log(err)
                 })
         }

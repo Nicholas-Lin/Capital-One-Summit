@@ -9,7 +9,6 @@
 
 
 ## Description
-
 View the project: https://capital-one-summit-2020.herokuapp.com/
 
 This is a web application using Yelp's Fusion API to help users pick a restaurant or experience. The app obtains user location via HTML5 Geolocation and plots mechants on a map based on search terms and search rules.
@@ -17,6 +16,18 @@ This is a web application using Yelp's Fusion API to help users pick a restauran
 
 ## Design
 
+### Requirements
+* Deployed web application
+* Uses Yelp's Fusion API
+* Plot merchants on a map
+* Obtain user location via HTML5 Geolocation
+### Additional Features
+* Users can refine a search by different parameters (open now, best match, rating, etc.)
+* Users recieve information about the distance in miles and time to reach a business
+* Users can select an item from the list to view its location on the map
+* Users can view the Yelp page for a merchant by clicking on the title of the business from the list or a map marker
+### Notes
+*  index.php and composer.json are only for Heroku functionality (required for buildpack detection)
 
 ## Built With
 * HTML/CSS/JavaScript
@@ -26,7 +37,6 @@ This is a web application using Yelp's Fusion API to help users pick a restauran
 * [Google Maps Platform](https://developers.google.com/maps/documentation)
 
 ## What I learned
-
 Before working on this project, I had never wrote a single line of HTML or CSS and I had very little experience in Javascript. I had originally planned on building my first website over the summer, but now time was no longer a luxury. I found the challenge to be overwhelming - I had never done anything close to building a website, and had no clue where to even begin.  After going through the requirements and spending days trying to learn a framework such as React and Vue.js, I made little to no progress and considered not pursuing the challenge.
 
 I decided to go back to basics with vanilla Javascript. As soon as I did this, I started making measurable progress. Although JS frameworks/libraries can be extremely powerful and help clean up code, I found that they abstracted away a lot of code, which made it difficult for me to understand what was happening behind the scenes. This is why I used vanilla Javascript with the occasional use of JQuery and Axios for modifying HTML and making API requests respectively. 

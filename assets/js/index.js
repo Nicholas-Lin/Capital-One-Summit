@@ -1,3 +1,9 @@
+/**
+ * FileName: index.js
+ * Author: Nicholas Lin
+ * Date: 3/3/20
+ * Description: Javascript for index.html
+ */
 
 //This script resolves a location in the location input to coordinates and passes these coordinates in as URL parameters
 
