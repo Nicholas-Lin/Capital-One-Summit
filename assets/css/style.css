@@ -1,26 +1,94 @@
-/*
- * Author: Carlos Alvarez
- * URL: http://alvarez.is
- *
- * Project Name: Landing Sumo - Theme 20
- * URL: http://LandingSumo.com
- * Version: 1.0
- * Exclusive Freebie for BlackTie.co
- */
-
-/*	################################################################
-	1. GENERAL STRUCTURES
-################################################################# */
-
 /* Import fonts */
 @import url(http://fonts.googleapis.com/css?family=Lato:300,400,700,900);
+
 
 * {
 	margin: 0;
 	padding: 0px;
     font-family: 'Lato', sans-serif;
 }
+/*
+html,body,.container {
+    height:100%;
+}
+.container {
+    display:table;
+    width: 100%;
+    margin-top: -50px;
+    padding: 50px 0 0 0; 
+    box-sizing: border-box;
+}
 
+.row {
+    height: 100%;
+    display: table-row;
+}
+.row .no-float {
+  display: table-cell;
+  float: none;
+}
+*/
+
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 34px;
+  }
+  
+  .switch input { 
+	opacity: 0;
+	width: 0;
+	height: 0;
+  }
+  
+  .slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	-webkit-transition: .4s;
+	transition: .4s;
+  }
+  
+  .slider:before {
+	position: absolute;
+	content: "";
+	height: 26px;
+	width: 26px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	-webkit-transition: .4s;
+	transition: .4s;
+  }
+  
+  input:checked + .slider {
+	background-color: #2196F3;
+  }
+  
+  input:focus + .slider {
+	box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+	-webkit-transform: translateX(26px);
+	-ms-transform: translateX(26px);
+	transform: translateX(26px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+	border-radius: 34px;
+  }
+  
+  .slider.round:before {
+	border-radius: 50%;
+  }
+  
 #map {
 	height: 100%;
 	width: 100%;
@@ -266,7 +334,7 @@ input {
 	color: white
 }
 
-.background{
+.landingbackground{
 	/*Formatting background*/
 	background: 
 	linear-gradient(
@@ -282,6 +350,15 @@ input {
 	background-repeat: no-repeat;
 	background-size: cover;
 }
+
+/*
+.background{
+	background-image: 
+	linear-gradient(
+      rgba(176, 233, 255, 0.826), 
+	  rgba(255, 255, 255, 0.826)
+    )
+}*/
 
 /* HEADER SECTION */
 #h {

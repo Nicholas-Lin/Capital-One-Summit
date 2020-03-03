@@ -19,6 +19,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
+        
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="icon" href="assets/img/favicon.ico">
 
@@ -27,45 +28,48 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container-fluid background">
         <div class="spacer5"></div>
         <div class="row">
-            <div class="col">
-                <h3>Your Results</h3>
-            </div>
-            <div class="col">
-                <a href="./index.html" class="btn btn-primary btn-md " style="float: right;" tabindex="-1"
-                    role="button">Make Another Search</a>
+            <div class="col" >
+                <h1>Your Results</h1>
             </div>
         </div>
         
         <div class="row">
             <div class="col-sm">
-                <button type="button" class="btn btn-sm btn-primary" disabled>Only Open</button>
+                <h5>Open Now:</h5>
+                <label class="switch">
+                    <input id = "open-switch"  type="checkbox">
+                    <span class="slider round"></span>
+                </label>
             </div>
             <div class="col-sm">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
-                        Action
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Separated link</a>
-                    </div>
-                </div>
+                <h5>Search By: </h5>
+                <!--Radio buttons-->
+                <div id="sortby" class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-secondary active">
+                      <input type="radio" name="options" id="best_match" autocomplete="off" checked> Best Match
+                    </label>
+                    <label class="btn btn-secondary">
+                      <input type="radio" name="options" id="rating" autocomplete="off"> Rating
+                    </label>
+                    <label class="btn btn-secondary">
+                      <input type="radio" name="options" id="distance" autocomplete="off"> Distance
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="options" id="review_count" autocomplete="off"> Review Count
+                      </label>
+                  </div>
             </div>
-            <div class="col-sm">
-                <button type="button" class="btn btn-sm btn-primary" disabled>Primary
-                    button</button>
+            <div class="col">
+                <a href="./index.html" class="btn btn-conf btn-blue font-weight-bold" style="float: right;" tabindex="-1"
+                    role="button">Discover Another Experience</a>
             </div>
         </div>
         
         <div class="row">
-            <div class="col">
+            <div class="col-md-5">
                 <div class="panel panel-primary" id="result_panel">
                     <div class="panel-heading">
                     </div>
@@ -77,10 +81,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-md-7">
                 <div id="map"></div>
             </div>
         </div>
+        
     </div>
 
     <!--The div element for the map -->
@@ -88,13 +93,43 @@
     <script>
         //List of businesses from API
         var businesses;
+        var customParams;
         //Dictionary of map markers key: business ID, Value:Marker
         var gmarkers = {};
+        var bounds = null;
         //Array of URL parameters
         var urlParams = getURLParams();
         //Google Map object
         var map = null;
+        var currentLocation;
+        var distanceInfo;
+        getData();
 
+        
+
+        $('#open-switch').change(function () {
+            var open_now = this.checked
+            customParams.params['open_now'] = open_now;
+            clearData();
+            getData();
+        });
+
+        $('#sortby .btn').on('click', function (event) {
+            customParams.params['sort_by'] = $(this).find('input').attr('id');
+            clearData();
+            getData();
+        });
+        
+        function clearData(){
+            bounds = new google.maps.LatLngBounds();
+            businesses = null;
+            for (var key in gmarkers) {
+                if(key != 0){
+                    gmarkers[key].setMap(null);
+                }
+            }
+            $('#main-list').empty()
+        }
         
         // Get ratings
         function getRatings(BID, rating) {
@@ -109,17 +144,18 @@
             //document.querySelector('#B' + BID.toString() + ` .number-rating`).innerHTML = rating;
         }
 
+        
         //Initializes Google Map
         function initMap() {
-            // The location of Uluru
+            // The location of currentLocation
             var lat = parseFloat(urlParams[0]);
             var lng = parseFloat(urlParams[1]);
-            var uluru = { lat: lat, lng: lng };
-            // The map, centered at Uluru
+            currentLocation = { lat: lat, lng: lng };
+            // The map, centered at currentLocation
             map = new google.maps.Map(
-                document.getElementById('map'), { zoom: 15, center: uluru});
-            // The marker, positioned at Uluru
-
+                document.getElementById('map'), { zoom: 15, center: currentLocation});
+            // The marker, positioned at currentLocation
+            bounds = new google.maps.LatLngBounds();
             //Scale custom marker icon
             var icon = {
                 url: "./assets/img/bluePin.png", // url
@@ -128,12 +164,11 @@
                 anchor: new google.maps.Point(17.5,56.4) // anchor
             };
             addMarker({
-                    location: uluru,
+                    location: currentLocation,
                     content: '<h5>You are here!</h5>',
                     id: 0,
                     iconImage: icon
                 });
-
             var marker = gmarkers[0];
             google.maps.event.trigger(marker, 'click');
             
@@ -144,25 +179,73 @@
             var queryString = decodeURIComponent(window.location.search);
             queryString = queryString.substring(1);
             var queries = queryString.split("&");
+            customParams = {
+                headers: {'Authorization': `Bearer 4AqxzDTp64YsnrAXrp0AiMC_39WCTXKcZT9doX3_5UwgF7E3UNjNW5bWeI7SsATBpotoOknHOOyhRIEefZTikEos9M27oprKc1N_JLmU7mVv6HBrSRsy6y8WDeVRXnYx`},
+                params: {
+                    'latitude': queries[0],
+                    'longitude': queries[1],
+                    'term': queries[2]
+                }
+            };
             return queries;
+        }
+
+        function getDistance(bid,businessLocation) {
+                var service = new google.maps.DistanceMatrixService;
+                service.getDistanceMatrix({
+                    origins: [currentLocation],
+                    destinations: [businessLocation],
+                    travelMode: 'DRIVING',
+                    unitSystem: google.maps.UnitSystem.IMPERIAL,
+                    avoidHighways: false,
+                    avoidTolls: false
+                }, function (response, status) {
+                    if (status !== 'OK') {
+                        alert('Error was: ' + status);
+                    } else {
+                        distanceInfo = response.rows[0].elements[0];
+                        $( "#B" + bid + " #distance_text").text(distanceInfo.distance.text);
+                        $( "#B" + bid + " #duration_text").text(distanceInfo.duration.text);
+                    }
+                });
+
         }
 
         //This function processes API data and adds each business to the list and creates a marker of the map
         function addToList(apiData) {
+            /*
+                axios.get('https://cors-anywhere.herokuapp.com/' + 'https://api.yelp.com/v3/businesses/' + b.id,{
+                    headers: {
+                        Authorization: `Bearer 4AqxzDTp64YsnrAXrp0AiMC_39WCTXKcZT9doX3_5UwgF7E3UNjNW5bWeI7SsATBpotoOknHOOyhRIEefZTikEos9M27oprKc1N_JLmU7mVv6HBrSRsy6y8WDeVRXnYx`
+                    },
+                })
+            .then((res) => {
+                businessDetails[b.id] = res;
+            })
+            .catch((err) => {
+                console.log(err)
+            })*/
             businesses = apiData.data.businesses
             for (var i = 0; i < businesses.length; i++) {
                 var b = businesses[i]
+                businessLocation = { lat: b.coordinates.latitude, lng: b.coordinates.longitude }
+                
+                
                 var data = {
-                    location: { lat: b.coordinates.latitude, lng: b.coordinates.longitude },
+                    location: businessLocation,
                     name: b.name,
                     id: b.id,
-                    content: '<h6>' + b.name + '</h6>',
+                    content: '<a href='+ b.url +'>' + b.name + '</a>'
                 }
                 addMarker(data);
                 createListItem(b);
+                getDistance(b.id, businessLocation);
             }
+            //Recenters map based on marker placement
+            map.fitBounds(bounds);
         }
-        
+
+
         //Adds markers to the map
         function addMarker(props){
             var marker = new google.maps.Marker({
@@ -171,6 +254,8 @@
             animation: google.maps.Animation.DROP,
             });
             gmarkers[props.id] = marker;
+              //extend the bounds to include each marker's position
+            bounds.extend(marker.position);
             marker.addListener('click', toggleBounce);
             //Adds a bounce animation to markers
             function toggleBounce() {
@@ -201,7 +286,7 @@
                 infoWindow.open(map, marker);
                 setTimeout(function() {
                     infoWindow.close()
-                    }, 10000);
+                    }, 5000);
             });
             }
         }
@@ -216,10 +301,11 @@
 
         //Creates a media object containing business information and inserts it into the unordered list of the HTML
         function createListItem(b) {
-            var lat = b.coordinates.latitude;
-            var long = b.coordinates.longitude;
+            var latitude = b.coordinates.latitude;
+            var longitude = b.coordinates.longitude;
+            
             var html = [
-                            '<li class="list-group-item" onmousedown="selectBusiness(' + "'" + lat + "&" + long + "&" + b.id + "'" + ')">',
+                            '<li id=B'+b.id+' class="list-group-item" onmousedown="selectBusiness(' + "'" + latitude + "&" + longitude + "&" + b.id + "'" + ')">',
                                 '<div class="media">',
                                     '<img src=' + b.image_url +' class="mr-3" style="width:60px">',
                                     '<div class="media-body">',
@@ -232,11 +318,11 @@
                                                     '<div class="row">',
                                                         b.categories[0].title,
                                                     '</div>',
-                                                    '<div class="row" id=B'+b.id+'>',
+                                                    '<div class="row">',
                                                             '<div class="stars-outer">',
                                                                 '<div class="stars-inner"></div>',
                                                             '</div>',
-                                                        '<span class="number-rating">' + " " +b.rating+'</span>',
+                                                        '<span class="number-rating">' + " " +b.review_count+' Reviews </span>',
                                                     '</div>',
                                                 '</div>',
                                                 '<div class="col-sm">',
@@ -249,6 +335,12 @@
                                                     '<div class="row justify-content-md-end font-weight-bold">',
                                                         b.price,
                                                     '</div>',
+                                                    '<div class="row justify-content-md-end">',
+                                                        '<small id="distance_text"></small>',
+                                                    '</div>',
+                                                    '<div class="row justify-content-md-end">',
+                                                        '<small id="duration_text"></small>',
+                                                    '</div>',
                                                 '</div>',
                                             '</div>',
                                         '</div>',
@@ -260,31 +352,28 @@
             $('#main-list').append(html);
             getRatings(b.id, b.rating);
         }
-
+        
         //Gets business information based on search parameters
-        axios.get('https://cors-anywhere.herokuapp.com/' + 'https://api.yelp.com/v3/businesses/search', {
-            headers: {
-                Authorization: `Bearer 4AqxzDTp64YsnrAXrp0AiMC_39WCTXKcZT9doX3_5UwgF7E3UNjNW5bWeI7SsATBpotoOknHOOyhRIEefZTikEos9M27oprKc1N_JLmU7mVv6HBrSRsy6y8WDeVRXnYx`
-            },
-            params: {
-                latitude: urlParams[0],
-                longitude: urlParams[1],
-                term: urlParams[2],
-            }
-        })
-            .then((res) => {
-                //Clear markers?
-                addToList(res)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+        
+        function getData(){
+            axios.get('https://cors-anywhere.herokuapp.com/' + 'https://api.yelp.com/v3/businesses/search', 
+                customParams
+            )
+                .then((res) => {
+                    addToList(res)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        }
+            
     </script>
 
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZov1f1Cpq5p5HyPpgz9aoGIqWYr4ZJU0&callback=initMap">
         </script>
 
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
 </body>
 
 </html>
