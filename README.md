@@ -6,13 +6,15 @@
 </p>
 
 # Capital One Summit 2020 Challenge Submission
-
+<b>Created By</b>: Nicholas Lin
 A web application using Yelp's Fusion API to help users pick a restaurant or experience. 
 
 ## Built With
 * HTML/CSS/JavaScript
 * Bootstrap
 * JQuery/Axios
+* [Yelp's Fusion API ](https://www.yelp.com/developers)
+* [Google Maps Platform](https://developers.google.com/maps/documentation)
 
 ## What I learned
 
@@ -20,5 +22,4 @@ Before working on this project, I had never wrote a single line of HTML or CSS a
 
 I decided to go back to basics with vanilla Javascript. As soon as I did this, I started making measurable progress. Although JS frameworks/libraries can be extremely powerful and help clean up code, I found that they abstracted away a lot of code, which made it difficult for me to understand what was happening behind the scenes. This is why I used vanilla Javascript with the occasional use of JQuery and Axios for modifying HTML and making API requests respectively. 
 
-
-This challenge was an amazing experience to really push myself and see how much I can accomplish in as short as a week. I overcame that fear of working with data and feel a lot more comfortable in working between different languages for one project. Up until this point, I don't think I've had a class really push me like this or work with anything but C/C++ or assembly.
+This challenge was an amazing opportunity that made me really push myself to see what I could accomplish with a fundamental understanding of CS in a two week time frame. I have learned so much from working with these different languages, and I still have a long way to go as a developer. Overall this challenge was very fun and I enjoyed working on this project - thank you!
