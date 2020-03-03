@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="assets/mg/capitalOneLogo.png" width="150">
+    <img src="assets/img/capitalOneLogo.png" width="150">
   </a>
 
   <h3 align="center">Software Engineering Summit 2020 Challenge</h3>
