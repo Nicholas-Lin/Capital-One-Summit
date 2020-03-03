@@ -7,7 +7,7 @@
 
 
 /* Import fonts */
-@import url(https://fonts.googleapis.com/css?family=Lato:300,400,700,900);
+@import url(http://fonts.googleapis.com/css?family=Lato:300,400,700,900);
 
 .full-height { display: flex; flex-direction: column; height: 100%; }
 .fill-height { flex-grow: 1; width: 100%; }
