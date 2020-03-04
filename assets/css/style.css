@@ -19,6 +19,18 @@
 	padding: 0px;
     font-family: 'Lato', sans-serif;
 }
+.top-buffer { margin-top:20px; }
+
+.header {
+	padding: 30px;
+	text-align: center;
+	background: rgb(170,219,199);
+	background: linear-gradient(144deg, rgba(170,219,199,1) 0%, rgba(104,236,229,1) 22%, rgba(0,179,255,1) 100%);
+	color: white;
+	font-weight: 700;
+	font-size: 40px;
+  }
+
 /*Enables scrolling for lists*/
 .list-group{
 	/*Make scalable height*/
@@ -336,13 +348,22 @@ input {
 	margin-top: 20px;
 	}
 
+	.btn-conf-3 {
+		border-radius: 50px;
+		margin-right: 0px;
+		font-size: 13px;
+		letter-spacing: 1px;
+		text-transform: uppercase;
+		padding: 12px 18px 12px 18px;
+	}
+
 .btn-red {
 	background: #D32323;
 	color: white
 }
 
 .btn-blue {
-	background: rgb(35, 141, 211);
+	background: rgb(62, 169, 240);
 	color: white
 }
 
@@ -350,7 +371,7 @@ input {
 	/*Formatting background*/
 	background: 
 	linear-gradient(
-      rgba(176, 233, 255, 0.826), 
+      rgba(106, 213, 255, 0.826), 
       rgba(255, 255, 255, 0.826)
     ),
 	/* The image used */

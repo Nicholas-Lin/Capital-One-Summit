@@ -35,19 +35,20 @@ Description: Search results page of web app
 </head>
 
 <body>
-    <header>Your Results</header>
-    <div class="container-fluid">
+    <header id="results-summary" class ="header">Loading your next Adventure...</header>
+    <div class="container-fluid top-buffer">
         <div class="row">
-            <div class="col-sm">
-                <h5>Open Now:</h5>
+            <!--Toggle input for displaying only open businesses-->
+            <div class="col-md-5">
+                <h5 class = "font-weight-bold">Open Now:</h5>
                 <label class="switch">
                     <input id = "open-switch"  type="checkbox">
                     <span class="slider round"></span>
                 </label>
             </div>
-            <div class="col-sm">
-                <h5>Search By: </h5>
-                <!--Radio buttons-->
+            <!--Radio buttons for additional search preferences-->
+            <div class="col-md-4">
+                <h5 class = "font-weight-bold"> Search By: </h5>
                 <div id="sortby" class="btn-group btn-group-toggle" data-toggle="buttons">
                     <label class="btn btn-secondary active">
                       <input type="radio" name="options" id="best_match" autocomplete="off" checked> Best Match
@@ -63,33 +64,34 @@ Description: Search results page of web app
                       </label>
                   </div>
             </div>
-            <div class="col">
-                <a href="./index.html" class="btn btn-conf btn-blue font-weight-bold" style="float: right;" tabindex="-1"
+            <!--Toggle input for displaying only open businesses-->
+            <div class="col-md-3">
+                <span class="align-top">
+                <a href="./index.html" class="btn btn-conf-3 btn-blue font-weight-bold" style="float: right;" tabindex="-1"
                     role="button">Discover Another Experience</a>
+                </span>
             </div>
         </div>
         
-        <div class="row">
+        <!--Row for displaying results-->
+        <div class="row border flex-grow-1">
+            <!--List of search results-->
             <div class="col-md-5">
                 <div class="panel panel-primary" id="result_panel">
-                    <div class="panel-heading">
-                    </div>
                     <div class="panel">
                         <ul id="main-list" class="list-group border">
                             <!--Javascript generates a list of businesses here-->
                         </ul>
-                        <small>"Results Here"</small>
                     </div>
                 </div>
             </div>
+            <!--Google Map with plotted merchants-->
             <div class="col-md-7">
                 <div id="map"></div>
             </div>
         </div>
         
     </div>
-
-    <!--The div element for the map -->
 
     <script>
         //List of businesses from API
@@ -104,10 +106,9 @@ Description: Search results page of web app
         var map = null;
         var currentLocation;
         var distanceInfo;
-        var listNumber = 0;
+        var resultNumber = 0;
         getData();
         
-
         $('#open-switch').change(function () {
             var open_now = this.checked
             customParams.params['open_now'] = open_now;
@@ -129,7 +130,8 @@ Description: Search results page of web app
                     gmarkers[key].setMap(null);
                 }
             }
-            listNumber = 0;
+            resultNumber = 0;
+            $('#results-summary').text("Finding Your Next Favorite Spot...");
             $('#main-list').empty()
         }
         
@@ -244,8 +246,17 @@ Description: Search results page of web app
                 createListItem(b);
                 getDistance(b.id, businessLocation);
             }
+
+            //Updates the header text to reflect the number of results
+            if(resultNumber == 0){
+                $('#results-summary').text("Oops, there are 0 results. Try entering a different search term or location.");
+            }else{
+                $('#results-summary').text("Explore " + resultNumber + " New Places");
+            }
+            
             //Recenters map based on marker placement
             map.fitBounds(bounds);
+
         }
 
 
@@ -306,7 +317,7 @@ Description: Search results page of web app
         function createListItem(b) {
             var latitude = b.coordinates.latitude;
             var longitude = b.coordinates.longitude;
-            listNumber++;
+            resultNumber++;
             
             var html = [
                             '<li id=B'+b.id+' class="list-group-item" onmousedown="selectBusiness(' + "'" + latitude + "&" + longitude + "&" + b.id + "'" + ')">',
@@ -317,7 +328,7 @@ Description: Search results page of web app
                                             '<div class="row">',
                                                 '<div class="col-md">',
                                                     '<div class="row">',
-                                                        '<h5>'+ '<a href=' + b.url + '>' + listNumber + ". " +b.name +  '</a></h5>',
+                                                        '<h5>'+ '<a href=' + b.url + '>' + resultNumber + ". " +b.name +  '</a></h5>',
                                                     '</div>',
                                                     '<div class="row">',
                                                         b.categories[0].title,
@@ -343,6 +354,7 @@ Description: Search results page of web app
                                                         '<small id="distance_text"></small>',
                                                     '</div>',
                                                     '<div class="row justify-content-md-end">',
+                                                        '<img src="./assets/img/car.png" width="20">',
                                                         '<small id="duration_text"></small>',
                                                     '</div>',
                                                 '</div>',
