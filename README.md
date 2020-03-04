@@ -9,7 +9,7 @@
 
 
 ## Description
-View the project: https://capital-one-summit-2020.herokuapp.com/
+View the project: https://nicholas-lin.github.io/capital-one-summit-2020/
 
 This is a web application using Yelp's Fusion API to help users pick a restaurant or experience. The app obtains user location via HTML5 Geolocation and plots mechants on a map based on search terms and search rules.
 
