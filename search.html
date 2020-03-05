@@ -96,15 +96,19 @@ Description: Search results page of web app
     <script>
         //List of businesses from API
         var businesses;
+        //List of parameters for Yelp API request
         var customParams;
         //Dictionary of map markers key: business ID, Value:Marker
         var gmarkers = {};
+        //Bounds for google map based on markers
         var bounds = null;
         //Array of URL parameters
         var urlParams = getURLParams();
         //Google Map object
         var map = null;
+        //Current location entered as a coordinate
         var currentLocation;
+        //Distance information
         var distanceInfo;
         var resultNumber = 0;
         getData();
@@ -288,6 +292,13 @@ Description: Search results page of web app
             // Set icon image
             marker.setIcon(props.iconImage);
             }
+
+            /* Label markers based on number
+            if(resultNumber > 0 && resultNumber <= 20){
+            // Set icon image
+                marker.setLabel(String(resultNumber));
+            }
+            */
 
             // Check content and creates infowindow for marker
             if(props.content){
