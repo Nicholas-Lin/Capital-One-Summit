@@ -92,7 +92,7 @@ Description: Search results page of web app
                     <!--List of search results-->
                     <div id= "results-col" class="col-md-5" data-toggle="tooltip" data-placement="top"
                     title="Scroll and click on an item to see it on the map">
-                        <div class="panel panel-primary">
+                        <div class="scroll-container">
                             <ul id="main-list" class="list-group border" >
                                 <!--Javascript generates a list of businesses here-->
                             </ul>
@@ -135,12 +135,12 @@ Description: Search results page of web app
                   container: 'body'
             });
 
+            //Make tool tip appear when page loads then dissapear
             $('#results-col').tooltip({
                 container: 'body',
                 trigger : 'manual'
             });
             $('#results-col').tooltip('show');
-            
             setTimeout(function () { $('#results-col').tooltip('hide'); }, 15000);
             $('#results-col').tooltip('disable');
         });
