@@ -42,6 +42,19 @@
 	font-size: 40px;
   }
 
+  .footer {
+	width: 100%;
+	margin-top:10px;
+	padding: 5px;
+	text-align: center;
+	background: rgb(237,226,205);
+	background: linear-gradient(150deg, rgba(237,226,205,1) 0%, rgba(97,215,226,1) 30%, rgba(13,111,187,1) 100%);
+	color: black;
+	word-spacing: 2px;
+	font-weight: 40;
+	font-size: 12px;
+  }
+
 
 /*Enables scrolling for lists*/
 .list-group{
