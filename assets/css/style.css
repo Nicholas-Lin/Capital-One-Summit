@@ -15,7 +15,15 @@
     font-family: 'Lato', sans-serif;
 }
 
-.top-buffer { margin-top:20px; }
+.panel {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	
+	display: flex;
+	flex-direction: column;
+}
 
 /*Add hover effect for list items*/
 .list-group-item:hover {
@@ -23,7 +31,9 @@
 }
 
 .header {
-	padding: 30px;
+	width: 100%;
+	margin-bottom:15px;
+	padding: 25px;
 	text-align: center;
 	background: rgb(170,219,199);
 	background: linear-gradient(144deg, rgba(170,219,199,1) 0%, rgba(104,236,229,1) 22%, rgba(0,179,255,1) 100%);
@@ -32,41 +42,20 @@
 	font-size: 40px;
   }
 
+
 /*Enables scrolling for lists*/
 .list-group{
 	/*Make scalable height*/
-    background: white;
-  flex-grow: 1;
-  
-  overflow: auto;
-  
-  /* for Firefox */
-  min-height: 0;
+	flex-grow: 1;
+	margin-left: 10px;
+
+  	overflow: auto;
+  	min-height: 0;
 }
 .card-horizontal {
     display: flex;
     flex: 1 1 auto;
 }
-
-
-/*Uncomment for fill height*/
-/*
-body {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-}
-
-.container-fluid,
-.row-fluid { height: inherit; }
-
-.background{
-	background-image: 
-	linear-gradient(
-      rgba(176, 233, 255, 0.826), 
-	  rgba(163, 7, 7, 0.826)
-    )
-}*/
 
 .switch {
 	position: relative;

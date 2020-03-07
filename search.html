@@ -30,11 +30,14 @@ Description: Search results page of web app
 </head>
 
 <body>
-    <header id="results-summary" class="header">Loading your next Adventure...</header>
-    <div class="container-fluid h-100 top-buffer">
+    
+    <div class="container-fluid h-100 ">
         <div class="row justify-content-center h-100">
             <div class="h-100 d-flex flex-column col-md-12">
-                <div class="row">
+                <div class="row ">
+
+                    <header id="results-summary" class="header ">Loading your next Adventure...</header>
+                    
                     <!--Toggle input for displaying only open businesses-->
                     <div class="col-md-2">
                         <h5 class="font-weight-bold">Open Now:</h5>
@@ -87,10 +90,10 @@ Description: Search results page of web app
                 <!--Row for displaying results-->
                 <div class="row flex-grow-1">
                     <!--List of search results-->
-                    <div class="col-md-5">
-                        <div class="panel panel-primary" id="result-panel" data-toggle="tooltip" data-placement="top"
-                            title="Scroll and click on an item to see it on the map">
-                            <ul id="main-list" class="list-group">
+                    <div id= "results-col" class="col-md-5" data-toggle="tooltip" data-placement="top"
+                    title="Scroll and click on an item to see it on the map">
+                        <div class="panel panel-primary">
+                            <ul id="main-list" class="list-group border" >
                                 <!--Javascript generates a list of businesses here-->
                             </ul>
                         </div>
@@ -128,14 +131,18 @@ Description: Search results page of web app
         //Activate tooltips (hover)
         $(document).ready(function () {
              $('[data-toggle="tooltip"]').tooltip({
-                  trigger : 'hover'
+                  trigger : 'hover',
+                  container: 'body'
             });
-            $('#result-panel').tooltip({
-                  trigger : 'manual'
+
+            $('#results-col').tooltip({
+                container: 'body',
+                trigger : 'manual'
             });
-            $('#result-panel').tooltip('show');
-            setTimeout(function () { $('#result-panel').tooltip('hide'); }, 15000);
-            $('#result-panel').tooltip('disable')
+            $('#results-col').tooltip('show');
+            
+            setTimeout(function () { $('#results-col').tooltip('hide'); }, 15000);
+            $('#results-col').tooltip('disable');
         });
 
         $('#open-switch').change(function () {
@@ -422,6 +429,9 @@ Description: Search results page of web app
                     console.log(err)
                 })
         }
+
+
+        
             
     </script>
 
