@@ -21,6 +21,11 @@
 }
 .top-buffer { margin-top:20px; }
 
+/*Add hover effect for list items*/
+.list-group-item:hover {
+    box-shadow: inset 1.5px 1.5px 3px 3.75px rgba(0,0,0,0.2);
+}
+
 .header {
 	padding: 30px;
 	text-align: center;
@@ -278,13 +283,15 @@ a {
 	-o-transition: background-color .4s linear, color .4s linear;
 	-ms-transition: background-color .4s linear, color .4s linear;
 	transition: background-color .4s linear, color .4s linear;
-	color: rgb(35, 141, 211);;
+	color: rgb(35, 141, 211);
 }
 a:hover,
 a:focus {
   text-decoration: none;
   color:#696E74;
 }
+
+
 
 .nopadding {
 	padding: 0px !important;
@@ -366,6 +373,11 @@ input {
 	background: rgb(62, 169, 240);
 	color: white
 }
+.btn-blue:hover{
+	background-color: white; 
+	color: black; 
+	border: 2px solid rgb(35, 141, 211);
+  }
 
 .landingbackground{
 	/*Formatting background*/

@@ -85,7 +85,7 @@ Description: Search results page of web app
         <div class="row flex-grow-1">
             <!--List of search results-->
             <div class="col-md-5">
-                <div class="panel panel-primary" id="result_panel" 
+                <div class="panel panel-primary" id="result-panel" 
                 data-toggle="tooltip" data-placement="top" title="Scroll and click on an item to see it on the map">
                         <ul id="main-list" class="list-group border">
                             <!--Javascript generates a list of businesses here-->
@@ -120,18 +120,19 @@ Description: Search results page of web app
         var offset = 0;
         var resultNumber = 0;
         getData();
-        $('#result_panel').mouseenter(function () {
-                var that = $(this)
-                that.tooltip('show');
-                setTimeout(function () {
-                    that.tooltip('hide');
-                }, 2700);
-            });
 
-            $('#result_panel').mouseleave(function () {
-                $(this).tooltip('hide');
+        //Activate tooltips (hover)
+        $(document).ready(function () {
+             $('[data-toggle="tooltip"]').tooltip({
+                  trigger : 'hover'
             });
-
+            $('#result-panel').tooltip({
+                  trigger : 'manual'
+            });
+            $('#result-panel').tooltip('show');
+            setTimeout(function () { $('#result-panel').tooltip('hide'); }, 15000);
+            $('#result-panel').tooltip('disable')
+        });
 
         $('#open-switch').change(function () {
             var open_now = this.checked
@@ -153,12 +154,7 @@ Description: Search results page of web app
             getData();
         });
 
-        //Activate tooltips (hover)
-        $(document).ready(function () {
-             $('[data-toggle="tooltip"]').tooltip({
-                  trigger : 'hover'
-            });
-        });
+        
         
         function clearData(){
             bounds = new google.maps.LatLngBounds();
@@ -278,7 +274,7 @@ Description: Search results page of web app
                     location: businessLocation,
                     name: b.name,
                     id: b.id,
-                    content: '<h6><a href='+ b.url +'>' + b.name + '</a></h6>'
+                    content: '<h6><a href='+ b.url +' target="_blank">' + b.name + '</a></h6>'
                 }
                 addMarker(data);
                 createListItem(b);
@@ -366,7 +362,7 @@ Description: Search results page of web app
                                             '<div class="row">',
                                                 '<div class="col-md">',
                                                     '<div class="row">',
-                                                        '<h5>'+ '<a href=' + b.url + '>' + resultNumber + ". " +b.name +  '</a></h5>',
+                                                        '<h5>'+ '<a href=' + b.url + ' target="_blank">' + resultNumber + ". " +b.name +  '</a></h5>',
                                                     '</div>',
                                                     '<div class="row">',
                                                         b.categories[0].title,
