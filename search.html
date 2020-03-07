@@ -39,15 +39,23 @@ Description: Search results page of web app
     <div class="container-fluid top-buffer">
         <div class="row">
             <!--Toggle input for displaying only open businesses-->
-            <div class="col-md-5">
+            <div class="col-md-2 border">
                 <h5 class = "font-weight-bold">Open Now:</h5>
                 <label class="switch">
                     <input id = "open-switch"  type="checkbox">
                     <span class="slider round"></span>
                 </label>
             </div>
+
+            <!--Button to load more results-->
+            <div id = more-results class="col-md-3 border" style = "align-items: center; display: flex; justify-content: center;">
+                <button class="btn btn-conf-3 btn-blue font-weight-bold" tabindex="-1" role="button">
+                     Show Me More! 
+                </button>
+            </div>
+
             <!--Radio buttons for additional search preferences-->
-            <div class="col-md-4">
+            <div class="col-md-4 border">
                 <h5 class = "font-weight-bold"> Search By: </h5>
                 <div id="sortby" class="btn-group btn-group-toggle" data-toggle="buttons">
                     <label class="btn btn-secondary active" data-toggle="tooltip" data-placement="top" title="Sort by best match">
@@ -64,12 +72,12 @@ Description: Search results page of web app
                       </label>
                   </div>
             </div>
-            <!--Toggle input for displaying only open businesses-->
-            <div class="col-md-3">
-                <span class="align-top">
-                <a href="./index.html" class="btn btn-conf-3 btn-blue font-weight-bold" style="float: right;" tabindex="-1"
-                    role="button">Discover Another Experience</a>
-                </span>
+
+            <!--Button for making another search-->
+            <div class="col-md-3 border" style = "align-items: center; display: flex; justify-content: center;">
+                <a href="./index.html" class="btn btn-primary" tabindex="-1" role="button">
+                    Discover Another Experience
+                </a>
             </div>
         </div>
         
@@ -110,6 +118,7 @@ Description: Search results page of web app
         var currentLocation;
         //Distance information
         var distanceInfo;
+        var offset = 0;
         var resultNumber = 0;
         getData();
         
@@ -124,6 +133,12 @@ Description: Search results page of web app
         $('#sortby .btn').on('click', function (event) {
             customParams.params['sort_by'] = $(this).find('input').attr('id');
             clearData();
+            getData();
+        });
+
+        $('#more-results .btn').on('click', function (event) {
+            offset += 20;
+            customParams.params['offset'] = offset;
             getData();
         });
 
