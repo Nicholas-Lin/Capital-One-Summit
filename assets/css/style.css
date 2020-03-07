@@ -35,10 +35,13 @@
 /*Enables scrolling for lists*/
 .list-group{
 	/*Make scalable height*/
-    max-height: 100%;
-	margin-bottom: 10px;
-    overflow:scroll;
-    -webkit-overflow-scrolling: touch;
+    background: white;
+  flex-grow: 1;
+  
+  overflow: auto;
+  
+  /* for Firefox */
+  min-height: 0;
 }
 .card-horizontal {
     display: flex;
