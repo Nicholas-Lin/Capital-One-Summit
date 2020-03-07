@@ -36,7 +36,7 @@ html,body{height:100%;}
 /*Enables scrolling for lists*/
 .list-group{
 	/*Make scalable height*/
-    max-height: 500px;
+    max-height: 100%;
 	margin-bottom: 10px;
     overflow:scroll;
     -webkit-overflow-scrolling: touch;
