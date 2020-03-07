@@ -50,17 +50,17 @@ Description: Search results page of web app
             <div class="col-md-4">
                 <h5 class = "font-weight-bold"> Search By: </h5>
                 <div id="sortby" class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-secondary active">
+                    <label class="btn btn-secondary active" data-toggle="tooltip" data-placement="top" title="Sort by best match">
                       <input type="radio" name="options" id="best_match" autocomplete="off" checked> Best Match
                     </label>
-                    <label class="btn btn-secondary">
-                      <input type="radio" name="options" id="rating" autocomplete="off"> Rating
+                    <label class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Sort by an adjusted rating value that takes into account the number of ratings">
+                      <input type="radio" name="options" id="rating" autocomplete="off"> Highest Rating
                     </label>
-                    <label class="btn btn-secondary">
-                      <input type="radio" name="options" id="distance" autocomplete="off"> Distance
+                    <label class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Sort by distance">
+                      <input type="radio" name="options" id="distance" autocomplete="off" > Distance
                     </label>
-                    <label class="btn btn-secondary">
-                        <input type="radio" name="options" id="review_count" autocomplete="off"> Review Count
+                    <label class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Sort by the number of reviews">
+                        <input type="radio" name="options" id="review_count" autocomplete="off" > Most Reviews
                       </label>
                   </div>
             </div>
@@ -120,10 +120,18 @@ Description: Search results page of web app
             getData();
         });
 
+
         $('#sortby .btn').on('click', function (event) {
             customParams.params['sort_by'] = $(this).find('input').attr('id');
             clearData();
             getData();
+        });
+
+        //Activate tooltips (hover)
+        $(document).ready(function () {
+             $('[data-toggle="tooltip"]').tooltip({
+                  trigger : 'hover'
+            });
         });
         
         function clearData(){
@@ -292,13 +300,6 @@ Description: Search results page of web app
             // Set icon image
             marker.setIcon(props.iconImage);
             }
-
-            /* Label markers based on number
-            if(resultNumber > 0 && resultNumber <= 20){
-            // Set icon image
-                marker.setLabel(String(resultNumber));
-            }
-            */
 
             // Check content and creates infowindow for marker
             if(props.content){
