@@ -39,7 +39,7 @@ Description: Search results page of web app
     <div class="container-fluid top-buffer">
         <div class="row">
             <!--Toggle input for displaying only open businesses-->
-            <div class="col-md-2 border">
+            <div class="col-md-2">
                 <h5 class = "font-weight-bold">Open Now:</h5>
                 <label class="switch">
                     <input id = "open-switch"  type="checkbox">
@@ -48,20 +48,20 @@ Description: Search results page of web app
             </div>
 
             <!--Button to load more results-->
-            <div id = more-results class="col-md-3 border" style = "align-items: center; display: flex; justify-content: center;">
+            <div id = more-results class="col-md-3" style = "align-items: center; display: flex; justify-content: flex-end;">
                 <button class="btn btn-conf-3 btn-blue font-weight-bold" tabindex="-1" role="button">
                      Show Me More! 
                 </button>
             </div>
 
             <!--Radio buttons for additional search preferences-->
-            <div class="col-md-4 border">
+            <div class="col-md-4">
                 <h5 class = "font-weight-bold"> Search By: </h5>
                 <div id="sortby" class="btn-group btn-group-toggle" data-toggle="buttons">
                     <label class="btn btn-secondary active" data-toggle="tooltip" data-placement="top" title="Sort by best match">
                       <input type="radio" name="options" id="best_match" autocomplete="off" checked> Best Match
                     </label>
-                    <label class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Sort by an adjusted rating value that takes into account the number of ratings">
+                    <label class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Sort by a combination of rating and number of reviews">
                       <input type="radio" name="options" id="rating" autocomplete="off"> Highest Rating
                     </label>
                     <label class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Sort by distance">
@@ -74,7 +74,7 @@ Description: Search results page of web app
             </div>
 
             <!--Button for making another search-->
-            <div class="col-md-3 border" style = "align-items: center; display: flex; justify-content: center;">
+            <div class="col-md-3" style = "align-items: center; display: flex; justify-content: flex-end;">
                 <a href="./index.html" class="btn btn-conf-3 btn-blue font-weight-bold" tabindex="-1" role="button">
                     Discover Another Experience
                 </a>
@@ -82,15 +82,14 @@ Description: Search results page of web app
         </div>
         
         <!--Row for displaying results-->
-        <div class="row border flex-grow-1">
+        <div class="row flex-grow-1">
             <!--List of search results-->
             <div class="col-md-5">
-                <div class="panel panel-primary" id="result_panel">
-                    <div class="panel">
+                <div class="panel panel-primary" id="result_panel" 
+                data-toggle="tooltip" data-placement="top" title="Scroll and click on an item to see it on the map">
                         <ul id="main-list" class="list-group border">
                             <!--Javascript generates a list of businesses here-->
                         </ul>
-                    </div>
                 </div>
             </div>
             <!--Google Map with plotted merchants-->
@@ -121,7 +120,19 @@ Description: Search results page of web app
         var offset = 0;
         var resultNumber = 0;
         getData();
-        
+        $('#result_panel').mouseenter(function () {
+                var that = $(this)
+                that.tooltip('show');
+                setTimeout(function () {
+                    that.tooltip('hide');
+                }, 2700);
+            });
+
+            $('#result_panel').mouseleave(function () {
+                $(this).tooltip('hide');
+            });
+
+
         $('#open-switch').change(function () {
             var open_now = this.checked
             customParams.params['open_now'] = open_now;
