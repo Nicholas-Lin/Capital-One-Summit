@@ -319,7 +319,9 @@ Description: Search results page of web app
             if(resultNumber == 0){
                 $('#results-summary').text("Oops, there are 0 results. Try entering a different search term or location.");
             }else{
-                $('#results-summary').text("Explore " + resultNumber + " New Places");
+                var resultsSummary = document.getElementById("results-summary");
+                resultsSummary.innerHTML = "Explore <span id='result-number'>" + resultNumber + "</span> New Places";
+                $('#results-summary').css("padding", "5px");
             }
             
             //Recenters map based on marker placement
