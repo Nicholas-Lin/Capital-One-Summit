@@ -11,8 +11,7 @@
 ## Description
 View the project: https://nicholas-lin.github.io/capital-one-summit-2020/
 
-This is a web application using Yelp's Fusion API to help users pick a restaurant or experience. The app obtains user location via HTML5 Geolocation and plots mechants on a map based on search terms and search rules.
-
+This is a web application using Yelp's Fusion API to help users pick a restaurant or experience. The app obtains user location via HTML5 Geolocation and plots merchants on a map based on search terms and search rules.
 
 ## Design
 
@@ -24,10 +23,11 @@ This is a web application using Yelp's Fusion API to help users pick a restauran
 ### Additional Features
 * Users can refine a search by different parameters (open now, best match, rating, etc.)
 * Users recieve information about the distance in miles and time to reach a business
-* Users can select an item from the list to view its location on the map
+* Users can request more businesses
+* Users can select an item from the list to view its location on the map and the route to get there
 * Users can view the Yelp page for a merchant by clicking on the title of the business from the list or a map marker
 ### Notes
-*  index.php and composer.json are only for Heroku functionality (required for buildpack detection)
+*  The Yelp API has [daily access limiting](https://www.yelp.com/developers) as well as [queries-per-second limiting](https://www.yelp.com/developers/documentation/v3/qps_rate_limiting). In some circumstances, these limits may lead to HTTP 429 errors, resulting in loss of core functionality.
 
 ## Built With
 * HTML/CSS/JavaScript

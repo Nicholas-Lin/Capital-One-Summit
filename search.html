@@ -1,15 +1,13 @@
 <!--
 FileName: search.html
 Author: Nicholas Lin
-Date: 3/3/20
+Date: 3/8/20
 Description: Search results page of web app
 -->
 
 <!DOCTYPE html>
 <html>
-
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,8 +20,8 @@ Description: Search results page of web app
     integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">        
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     
+    <!-- Axios -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <link rel="icon" href="./assets/img/favicon.ico">
 
     <!-- Custom styles for this page -->
     <link href="./assets/css/style.css" rel="stylesheet">
@@ -280,8 +278,6 @@ Description: Search results page of web app
                 
         }
 
-       
-
         //This function processes API data and adds each business to the list and creates a marker of the map
         function addToList(apiData) {
             /*
@@ -392,7 +388,11 @@ Description: Search results page of web app
             directionsRenderer.setMap(map);
             calculateAndDisplayRoute(directionsService, directionsRenderer, currentMarker.position, businessMarker.position);
             //Set zoom out to add "padding" to bounds
-            map.setZoom(map.getZoom()*0.9);
+            if(map.getZoom() > 16){
+                map.setZoom(map.getZoom()*0.5);
+            }else{
+                map.setZoom(map.getZoom()*0.9);
+            }
         }
 
         function calculateAndDisplayRoute(directionsService, directionsRenderer, currentPosition, businessPosition) {
