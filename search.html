@@ -389,10 +389,10 @@ Description: Search results page of web app
             bounds.extend(businessMarker.position);
             google.maps.event.trigger(businessMarker, 'click');
             map.fitBounds(bounds);
-            //Set zoom out to add "padding" to bounds
-            map.setZoom(map.getZoom()*0.9);
             directionsRenderer.setMap(map);
             calculateAndDisplayRoute(directionsService, directionsRenderer, currentMarker.position, businessMarker.position);
+            //Set zoom out to add "padding" to bounds
+            map.setZoom(map.getZoom()*0.9);
         }
 
         function calculateAndDisplayRoute(directionsService, directionsRenderer, currentPosition, businessPosition) {
