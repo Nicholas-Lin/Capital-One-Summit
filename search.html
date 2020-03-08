@@ -156,7 +156,7 @@ Description: Search results page of web app
 
         $('#open-checkbox').change(function () {     
             var open_now = this.checked;
-            console.log(open_now);
+            $('#results-summary').css("padding", "25px");
             customParams.params['open_now'] = open_now;
             clearData();
             getData();
@@ -165,6 +165,7 @@ Description: Search results page of web app
 
         $('#sortby .btn').on('click', function (event) {
             customParams.params['sort_by'] = $(this).find('input').attr('id');
+            $('#results-summary').css("padding", "25px");
             clearData();
             getData();
         });
@@ -321,7 +322,7 @@ Description: Search results page of web app
             }else{
                 var resultsSummary = document.getElementById("results-summary");
                 resultsSummary.innerHTML = "Explore <span id='result-number'>" + resultNumber + "</span> New Places";
-                $('#results-summary').css("padding", "5px");
+                $('#results-summary').css("padding", "3px");
             }
             
             //Recenters map based on marker placement
