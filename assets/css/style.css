@@ -15,6 +15,7 @@
     font-family: 'Lato', sans-serif;
 }
 
+
 .scroll-container {
 	position: absolute;
 	width: 100%;
@@ -379,6 +380,27 @@ input {
 	border: 2px solid rgb(35, 141, 211);
   }
 
+  .btn-checked{
+	border-radius: 50px;
+	margin-top: 0px;
+	font-size: 13px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	padding: 12px 18px 12px 18px;
+	background: rgb(156, 215, 255);
+	color: white
+}
+
+.btn-checked:active,
+.btn-checked.active{
+  color: #fff;
+  background-color: rgb(28, 75, 107);
+  box-shadow: inset 1.5px 1.5px 3px 3.75px rgba(0,0,0,0.2);
+
+}
+
+
+
 .landingbackground{
 	/*Formatting background*/
 	background: 
@@ -513,3 +535,7 @@ input {
 #f a:hover {
 	color: #03C9A9;
 }
+
+
+
+

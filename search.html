@@ -37,13 +37,16 @@ Description: Search results page of web app
                 <div class="row ">
                     <header id="results-summary" class="header ">Loading your next Adventure...</header>
                     <!--Toggle input for displaying only open businesses-->
-                    <div class="col-md-2">
-                        <h5 class="font-weight-bold">Open Now:</h5>
-                        <label class="switch">
-                            <input id="open-switch" type="checkbox">
-                            <span class="slider round"></span>
-                        </label>
+                    <div class="col-md-2" style="align-items: center; display: flex; justify-content: flex-start;">
+                        <div class="btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-checked font-weight-bold active" data-toggle="tooltip" data-placement="top"
+                            title="Find businesses that are open now" >
+                              <input id="open-checkbox" type="checkbox" checked autocomplete="off"> Open Now
+                            </label>
+                          </div>
                     </div>
+
+                    
     
                     <!--Button to load more results-->
                     <div id=more-results class="col-md-3"
@@ -124,10 +127,14 @@ Description: Search results page of web app
         var map = null;
         //Current location entered as a coordinate
         var currentLocation;
+        //Global infowindow on map
+        var currentInfoWindow = null;
         //Distance information
         var distanceInfo;
         var offset = 0;
         var resultNumber = 0;
+        var directionsService = null;
+        var directionsRenderer = null;
         getData();
 
         //Activate tooltips (hover)
@@ -147,8 +154,9 @@ Description: Search results page of web app
             $('#results-col').tooltip('disable');
         });
 
-        $('#open-switch').change(function () {
-            var open_now = this.checked
+        $('#open-checkbox').change(function () {     
+            var open_now = this.checked;
+            console.log(open_now);
             customParams.params['open_now'] = open_now;
             clearData();
             getData();
@@ -207,6 +215,14 @@ Description: Search results page of web app
                 document.getElementById('map'), { zoom: 15, center: currentLocation});
             // The marker, positioned at currentLocation
             bounds = new google.maps.LatLngBounds();
+
+            //Plot route on map
+            directionsService = new google.maps.DirectionsService;
+            directionsRenderer = new google.maps.DirectionsRenderer(
+                {
+                    suppressMarkers: true
+                });
+
             //Scale custom marker icon
             var icon = {
                 url: "./assets/img/bluePin.png", // url
@@ -216,7 +232,7 @@ Description: Search results page of web app
             };
             addMarker({
                     location: currentLocation,
-                    content: '<h5>You are here!</h5>',
+                    content: '<h5>You are here!</h5>', 
                     id: 0,
                     iconImage: icon
                 });
@@ -235,7 +251,8 @@ Description: Search results page of web app
                 params: {
                     'latitude': queries[0],
                     'longitude': queries[1],
-                    'term': queries[2]
+                    'term': queries[2],
+                    'open_now': true
                 }
             };
             return queries;
@@ -256,11 +273,13 @@ Description: Search results page of web app
                     } else {
                         distanceInfo = response.rows[0].elements[0];
                         $( "#B" + bid + " #distance_text").text(distanceInfo.distance.text);
-                        $( "#B" + bid + " #duration_text").text(distanceInfo.duration.text);
+                        $( "#B" + bid + " #duration_text").text(distanceInfo.duration.text);  
                     }
                 });
-
+                
         }
+
+       
 
         //This function processes API data and adds each business to the list and creates a marker of the map
         function addToList(apiData) {
@@ -281,17 +300,19 @@ Description: Search results page of web app
             for (var i = 0; i < businesses.length; i++) {
                 var b = businesses[i]
                 businessLocation = { lat: b.coordinates.latitude, lng: b.coordinates.longitude }
-                
-                
+                getDistance(b.id, businessLocation);
                 var data = {
                     location: businessLocation,
                     name: b.name,
                     id: b.id,
-                    content: '<h6><a href='+ b.url +' target="_blank">' + b.name + '</a></h6>'
+                    //Open link in new tab
+                    content: '<h6><a href='+ b.url +' target="_blank">' + b.name + '</a>' +
+                                '<h6 id= "B'+ b.id +'-infoWindowDuration"></h6>' +
+                            '</h6>'
                 }
+                
                 addMarker(data);
                 createListItem(b);
-                getDistance(b.id, businessLocation);
             }
 
             //Updates the header text to reflect the number of results
@@ -342,23 +363,49 @@ Description: Search results page of web app
                 content:props.content
             });
 
-            //Info pop up
+            //Info pop up only allow one at a time
             marker.addListener('click', function(){
-                infoWindow.open(map, marker);
-                setTimeout(function() {
-                    infoWindow.close()
-                    }, 5000);
+                if(currentInfoWindow != null){   
+                    currentInfoWindow.close();
+                }
+                currentInfoWindow = infoWindow;
+                currentInfoWindow.open(map, marker);
             });
             }
         }
 
+
+
         //Recenters the map and selects appropriate marker based on the business selected
         function selectBusiness(rawdata){
             var data = rawdata.split("&");
-            map.setCenter(new google.maps.LatLng(data[0], data[1]));
-            var marker = gmarkers[data[2]];
-            google.maps.event.trigger(marker, 'click');
+            var currentMarker = gmarkers[0];
+            var businessMarker = gmarkers[data[2]];
+            bounds = new google.maps.LatLngBounds();
+            bounds.extend(currentMarker.position);
+            bounds.extend(businessMarker.position);
+            google.maps.event.trigger(businessMarker, 'click');
+            map.fitBounds(bounds);
+            //Set zoom out to add "padding" to bounds
+            map.setZoom(map.getZoom()*0.9);
+            directionsRenderer.setMap(map);
+            calculateAndDisplayRoute(directionsService, directionsRenderer, currentMarker.position, businessMarker.position);
         }
+
+        function calculateAndDisplayRoute(directionsService, directionsRenderer, currentPosition, businessPosition) {
+                directionsService.route({
+                    origin: currentPosition,
+                    destination: businessPosition, 
+                    travelMode: 'DRIVING'
+                }, function (response, status) {
+                    if (status === 'OK') {
+                        directionsRenderer.setDirections(response);
+                    } else {
+                        window.alert('Directions request failed due to ' + status);
+                    }
+                });
+            }
+
 
         //Creates a media object containing business information and inserts it into the unordered list of the HTML
         function createListItem(b) {
@@ -423,7 +470,6 @@ Description: Search results page of web app
                 customParams
             )
                 .then((res) => {
-                    
                     addToList(res)
                 })
                 .catch((err) => {
@@ -440,7 +486,6 @@ Description: Search results page of web app
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZov1f1Cpq5p5HyPpgz9aoGIqWYr4ZJU0&callback=initMap">
         </script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
