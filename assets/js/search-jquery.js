@@ -35,13 +35,15 @@ $('#open-checkbox').change(function () {
 $('#sortby .btn').on('click', function (event) {
    customParams.params['sort_by'] = $(this).find('input').attr('id');
    $('#results-summary').css("padding", "25px");
+   customParams.params['offset'] = 0;
+   customParams.params['limit'] = 20;
    clearData();
    getData();
 });
 
 //Description: When more results button is selected, load more results
 $('#more-results .btn').on('click', function (event) {
-   offset += 20;
+   offset += 5;
    customParams.params['offset'] = offset;
-   getData();
+   customParams.params['limit'] = 5;
 });
