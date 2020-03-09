@@ -36,6 +36,7 @@ function getLocation() {
     var lat = parseFloat(queries[0]);
     var lng = parseFloat(queries[1]);
     var currentLocation = { lat: lat, lng: lng };
+    //Initial parameters for YelpAPI
     customParams = {
         headers: { 'Authorization': `Bearer 4AqxzDTp64YsnrAXrp0AiMC_39WCTXKcZT9doX3_5UwgF7E3UNjNW5bWeI7SsATBpotoOknHOOyhRIEefZTikEos9M27oprKc1N_JLmU7mVv6HBrSRsy6y8WDeVRXnYx` },
         params: {
@@ -52,15 +53,16 @@ function getLocation() {
  * name: getData()
  * description: Queries Yelp Business Search Endpoint based on customParams
  * precondition: customParams must be defined globally and intialized with proper parameters
- * postcondition: Forwards response to addToList()
+ * postcondition: Forwards response to addToList(apiData)
  * dependencies: Axios, Yelp API
  */
 function getData() {
+    //Axios request to Yelp Business Search endpoint through cors-anywhere
     axios.get('https://cors-anywhere.herokuapp.com/' + 'https://api.yelp.com/v3/businesses/search',
         customParams
     )
         .then((res) => {
-            addToList(res)
+            addToList(res) //Function Call: addToList(apiData)
         })
         .catch((err) => {
             console.log(err)
@@ -72,14 +74,15 @@ function getData() {
  * description: This function processes API data and adds each business to the list and creates a marker of the map
  * @param {apiData} YelpAPIResponse  
  * precondition: apiData is the raw response data from Yelp Businesses Endpoint
- * postcondition: A list item and marker is creaated for each business
+ * postcondition: A list item and marker is created for each business
+ * dependencies: JQuery
  */
 function addToList(apiData) {
     businesses = apiData.data.businesses
     for (var i = 0; i < businesses.length; i++) {
         var b = businesses[i]
         businessLocation = { lat: b.coordinates.latitude, lng: b.coordinates.longitude }
-        getDistance(b.id, businessLocation);
+        getDistance(b.id, businessLocation); //Function Call: getDistance(b.id, businessLocation)
         var data = {
             location: businessLocation,
             name: b.name,
@@ -89,8 +92,8 @@ function addToList(apiData) {
                 '</h6>'
         }
 
-        addMarker(data);
-        createListItem(b);
+        addMarker(data); //Function Call: addMarker(props)
+        createListItem(b); //Function Call: createListItem(b)
     }
     //Updates the header text to reflect the number of results
     if (resultNumber == 0) {
@@ -127,6 +130,7 @@ function getDistance(bid, businessLocation) {
             alert('Error was: ' + status);
         } else {
             distanceInfo = response.rows[0].elements[0];
+            //Set the distance information for each business in HTML
             $("#B" + bid + " #distance_text").text(distanceInfo.distance.text);
             $("#B" + bid + " #duration_text").text(distanceInfo.duration.text);
         }
@@ -148,7 +152,7 @@ function addMarker(props) {
         animation: google.maps.Animation.DROP,
     });
     gmarkers[props.id] = marker;
-    //extend the bounds to include each marker's position
+    //Extend the bounds to include each marker's position
     bounds.extend(marker.position);
     marker.addListener('click', toggleBounce);
     //Adds a bounce animation to markers
@@ -174,9 +178,9 @@ function addMarker(props) {
         var infoWindow = new google.maps.InfoWindow({
             content: props.content
         });
-
         //Info pop up only allow one at a time
         marker.addListener('click', function () {
+            //If none is open then open, else close the current infoWindow and set current to this one
             if (currentInfoWindow != null) {
                 currentInfoWindow.close();
             }
@@ -192,10 +196,11 @@ function addMarker(props) {
  * @param {b}  YelpBusiness
  * precondition: b is a business based on Yelp Business Search Endpoint. resultNumber must be global. ul with ID of "main-list" must be available.
  * postcondition: A list item is created which contains business information. Each list item is appended #main-list.
- * dependencies: Jquery
+ * dependencies: JQuery
  */
 function createListItem(b) {
     resultNumber++;
+    //HTML to be inserted in the ul
     var html = [
         '<li id=B'+b.id+' class="list-group-item" onmousedown="selectBusiness(' + "'"+ b.id + "'" + ')">',
             '<div class="media">',
@@ -241,8 +246,8 @@ function createListItem(b) {
               '</div>',                                  
         '</li>'
     ].join("\n");
-    // html: '<div ...>\n<h1 ...>Constructing HTML Elements<h1>\n</div>'
     $('#main-list').append(html);
+    //Add ratings to each list item
     getRatings(b.id, b.rating);
 }
 
@@ -270,10 +275,9 @@ function initMap() {
     // The map, centered at currentLocation
     map = new google.maps.Map(
         document.getElementById('map'), { zoom: 15, center: currentLocation });
-    // The marker, positioned at currentLocation
     bounds = new google.maps.LatLngBounds();
 
-    //Plot route on map
+    //Initialize these for route plotting
     directionsService = new google.maps.DirectionsService;
     directionsRenderer = new google.maps.DirectionsRenderer(
         {
@@ -306,15 +310,16 @@ function initMap() {
  * dependencies: Google Maps API
  */
 function selectBusiness(BID) {
-    var currentMarker = gmarkers[0];
+    var currentMarker = gmarkers[0]; //current location
     var businessMarker = gmarkers[BID];
+    //Extend bounds appropriately to view the business on the map
     bounds = new google.maps.LatLngBounds();
     bounds.extend(currentMarker.position);
     bounds.extend(businessMarker.position);
     google.maps.event.trigger(businessMarker, 'click');
     map.fitBounds(bounds);
     directionsRenderer.setMap(map);
-    calculateAndDisplayRoute(currentMarker.position, businessMarker.position);
+    calculateAndDisplayRoute(currentMarker.position, businessMarker.position); //Plot route
     //Set zoom out to add "padding" to bounds
     if (map.getZoom() > 16) {
         map.setZoom(map.getZoom() * 0.5);
@@ -352,23 +357,23 @@ function calculateAndDisplayRoute(currentPosition, businessPosition) {
 * name: clearData()
 * description: This function clears/resets map data and appropriate data of current search data
 * postcondition: Resets bounds, businesses, resultNumber, gmarkers, and sets header appropriately
-* dependencies: Google Maps API
+* dependencies: Google Maps API, JQuery
 */
 function clearData() {
 
-    bounds = new google.maps.LatLngBounds();
-    businesses = null;
+    bounds = new google.maps.LatLngBounds(); //reset bounds
+    businesses = null; //clear businsses
     for (var key in gmarkers) {
         if (key != 0) {
-            gmarkers[key].setMap(null);
+            gmarkers[key].setMap(null); //clear all gmarkers except for current location
         }
     }
-    resultNumber = 0;
-    directionsRenderer.setMap(null);
+    resultNumber = 0; // Reset result number
+    directionsRenderer.setMap(null); //Clear routes
     directionsRenderer = new google.maps.DirectionsRenderer(
         {
             suppressMarkers: true //Suppress markers that are automatically generated by renderer
         });
-    $('#results-summary').text("Finding Your Next Favorite Spot...");
-    $('#main-list').empty()
+    $('#results-summary').text("Finding Your Next Favorite Spot..."); //Set header text
+    $('#main-list').empty() //Empty list
 }
