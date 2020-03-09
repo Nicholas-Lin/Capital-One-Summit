@@ -44,4 +44,4 @@ I decided to go back to basics with vanilla Javascript. As soon as I did this, I
 This challenge was an amazing opportunity that made me really push myself to see what I could accomplish with a fundamental understanding of CS in a two week time frame. I have learned so much from working with these different languages, and I still have a long way to go as a developer. Overall this challenge was very fun and I enjoyed working on this project - thank you!
 
 ## Author
-Hello, my name is Nicholas Lin and I am a first-year computer science study in the School of Engineering at UVA. If you have any questions or suggestions for improvement, feel free to email me at [nicholaslin@email.virginia.edu](mailto: nicholaslin@email.virginia.edu).
+Hello, my name is Nicholas Lin and I am a first-year computer science study in the School of Engineering at UVA. If you have any questions or suggestions for improvement, feel free to email me at [nicholaslin@email.virginia.edu](mailto:nicholaslin@email.virginia.edu).
