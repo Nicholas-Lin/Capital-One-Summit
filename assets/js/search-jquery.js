@@ -46,4 +46,5 @@ $('#more-results .btn').on('click', function (event) {
    offset += 5;
    customParams.params['offset'] = offset;
    customParams.params['limit'] = 5;
+   getData();
 });

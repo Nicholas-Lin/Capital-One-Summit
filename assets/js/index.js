@@ -6,7 +6,8 @@
  */
 
 // Adds listener to main-form submit button
-var locationForm = document.getElementById('main-form').addEventListener('submit', geocode);
+document.getElementById('main-form').addEventListener('submit', geocode);
+
 // Initiate geolocation when user loads the page
 getLocation();
 
