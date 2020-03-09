@@ -27,6 +27,8 @@ $('#open-checkbox').change(function () {
    var open_now = this.checked;
    $('#results-summary').css("padding", "25px");
    customParams.params['open_now'] = open_now;
+   customParams.params['offset'] = 0;
+   customParams.params['limit'] = 20;
    clearData();
    getData();
 });

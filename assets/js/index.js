@@ -6,7 +6,7 @@
  */
 
 // Adds listener to main-form submit button
-document.getElementById('main-form').addEventListener('submit', geocode);
+ document.getElementById('main-form').addEventListener('submit', geocode);
 
 // Initiate geolocation when user loads the page
 getLocation();
@@ -93,4 +93,28 @@ function geocode(e) {
 function redirect(lat, lng) {
     var queryString = "?" + lat + "&" + lng + "&" + document.getElementById('searchterm').value;
     window.location.href = "./search.html" + queryString;
+}
+
+ /**
+ * name: replyClick(clicked_id)
+ * description: click on suprise button fills search term
+ */
+function replyClick(clicked_id)
+{
+   word = getRandomWord();
+   document.getElementById('searchterm').value = word;
+}
+
+/**
+* name: getLocation()
+* description: Returns random word for search
+*/
+function getRandomWord(){
+   var array = ["Chinese", "Italian", "Indian", "Turkish", "Mexican", 
+               "Thai", "Korean", "Greek", "French", "Steak", "Burgers", "Mediterranian", "Healthy",
+               "Bars", "Best Restaurants", "Soul Food", "Smoothie", "Ice Cream", "Ramen", "BBQ", "Cheap Eats",
+               "Sushi", "Pho", "Vietnamese", "Fast Food"];
+   randInt = Math.floor(Math.random() * (array.length));
+   var item = array[randInt];
+   return item;
 }
