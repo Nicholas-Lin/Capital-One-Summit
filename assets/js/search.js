@@ -10,7 +10,7 @@ var resultNumber = 0; //Keeps track of the number of results yelp has generated 
 
 var businesses; //List of businesses from Yelp API
 var customParams; //List of parameters for Yelp API request
-var offset = 0; //Yelp API offset value for requests
+var offset = 20; //Yelp API offset value for requests
 
 var gmarkers = {}; //Dictionary of Google map markers key: business ID, Value:Marker
 var bounds = null; //Bounds for Google Map based on markers
@@ -263,6 +263,7 @@ function getRatings(BID, rating) {
     const starPercentage = (rating / starsTotal) * 100;
     const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`; // Round to nearest 10
     document.querySelector('#B' + BID.toString() + ` .stars-inner`).style.width = starPercentageRounded; // Set width of stars-inner to percentage
+    console.log(BID)
 }
 
 /**
