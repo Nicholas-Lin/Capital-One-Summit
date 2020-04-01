@@ -5,7 +5,7 @@
   <h3 align="center">Software Engineering Summit 2020 Challenge</h3>
 </p>
 
-# Capital One Summit 2020 Challenge Submission
+# Capital One Summit 2020 Challenge Winner
 
 
 ## Description
