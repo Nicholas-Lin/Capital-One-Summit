@@ -7,6 +7,7 @@
 
 var currentLocation = getLocation(); //Current user location as a coordinate
 var resultNumber = 0; //Keeps track of the number of results yelp has generated (also used for numbering businesses)
+var searchTerm;
 
 var businesses; //List of businesses from Yelp API
 var customParams; //List of parameters for Yelp API request
@@ -35,6 +36,7 @@ function getLocation() {
     var queries = queryString.split("&");
     var lat = parseFloat(queries[0]);
     var lng = parseFloat(queries[1]);
+    searchTerm = queries[2];
     var currentLocation = { lat: lat, lng: lng };
     //Initial parameters for YelpAPI
     customParams = {
@@ -42,10 +44,12 @@ function getLocation() {
         params: {
             'latitude': lat,
             'longitude': lng,
-            'term': queries[2],
+            'term': searchTerm,
             'open_now': true
         }
     };
+    searchTerm = searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1);
+    console.log(searchTerm);
     return currentLocation;
 }
 
@@ -98,9 +102,10 @@ function addToList(apiData) {
     //Updates the header text to reflect the number of results
     if (resultNumber == 0) {
         $('#results-summary').text("Oops, there are 0 results. Try entering a different search term or location.");
+
     } else {
         var resultsSummary = document.getElementById("results-summary");
-        resultsSummary.innerHTML = "Explore <span id='result-number'>" + resultNumber + "</span> New Places";
+        resultsSummary.innerHTML = "Explore the <span id='result-number'>" + resultNumber + "</span> Best " + searchTerm + " Places";
         $('#results-summary').css("padding", "3px");
     }
     //Recenters map based on marker placement
@@ -263,7 +268,6 @@ function getRatings(BID, rating) {
     const starPercentage = (rating / starsTotal) * 100;
     const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`; // Round to nearest 10
     document.querySelector('#B' + BID.toString() + ` .stars-inner`).style.width = starPercentageRounded; // Set width of stars-inner to percentage
-    console.log(BID)
 }
 
 /**
