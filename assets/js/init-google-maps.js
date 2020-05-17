@@ -1,3 +1,10 @@
+/**
+* File Name: init-google-maps.js
+* Author: Nicholas Lin
+* Date: 5/13/20
+* Description: Uses API key to initialize google maps
+*/
+
 // Create the script tag, set the appropriate attributes
 var script = document.createElement('script');
 const google_maps_api_key = config.GOOGLE_MAPS_API_KEY;
