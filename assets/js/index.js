@@ -61,8 +61,8 @@ function autoFillLocation(position) {
 function geocode(e) {
     e.preventDefault(); // Prevent actual submit
     var location = document.getElementById('location').value; //assigns the location value to location 
-    const google_maps_api_key = config.GOOGLE_MAPS_API_KEY;
     // Google Maps API call
+    const google_maps_api_key = config.GOOGLE_MAPS_API_KEY;
     axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
         params: {
             address: location, 

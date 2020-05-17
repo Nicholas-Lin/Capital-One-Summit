@@ -4,7 +4,6 @@
 * Date: 3/8/20
 * Description: Main javascript for search.html
 */
-
 var currentLocation = getLocation(); //Current user location as a coordinate
 var resultNumber = 0; //Keeps track of the number of results yelp has generated (also used for numbering businesses)
 var searchTerm;
