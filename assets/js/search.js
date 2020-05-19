@@ -50,7 +50,6 @@ function getLocation() {
         }
     };
     searchTerm = searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1);
-    console.log(searchTerm);
     return currentLocation;
 }
 
