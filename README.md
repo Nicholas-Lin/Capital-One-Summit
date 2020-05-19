@@ -9,7 +9,7 @@
 
 
 ## Description
-View the project: https://capital-one-summit.netlify.app/
+View the project: https://captial-one-summit.herokuapp.com/
 
 This is a web application using Yelp's Fusion API to help users pick a restaurant or experience. The app obtains user location via HTML5 Geolocation and plots merchants on a map based on search terms and search rules.
 
@@ -28,13 +28,7 @@ This is a web application using Yelp's Fusion API to help users pick a restauran
 * Users can view the Yelp page for a merchant by clicking on the title of the business from the list or a map marker
 ### Notes
 *  The Yelp API has [daily access limiting](https://www.yelp.com/developers) as well as [queries-per-second limiting](https://www.yelp.com/developers/documentation/v3/qps_rate_limiting). In some circumstances, these limits may lead to HTTP 429 errors, resulting in loss of core functionality.
-* To run locally, you will need to create a config.js in. This must be located in root/assets/js/config.js. with the following code:
-```
-var config = {
-    YELP_API_KEY : [YOUR YELP API KEY HERE],
-    GOOGLE_MAPS_API_KEY : [YOUR GOOGLE MAPS API KEY HERE]
-}
-```
+
 ## Built With
 * HTML/CSS/JavaScript
 * Bootstrap

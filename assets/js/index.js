@@ -10,6 +10,7 @@
 
 // Initiate geolocation when user loads the page
 getLocation();
+
 /**
  * name: getLocation()
  * description: Uses HTML geolocation to get the coordinates of the user
@@ -62,7 +63,7 @@ function geocode(e) {
     e.preventDefault(); // Prevent actual submit
     var location = document.getElementById('location').value; //assigns the location value to location 
     // Google Maps API call
-    const google_maps_api_key = config.GOOGLE_MAPS_API_KEY;
+    const google_maps_api_key = 'AIzaSyDBXKeIPL8przIRziEutJMF2tggdNhI5UE';
     axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
         params: {
             address: location, 
@@ -111,7 +112,7 @@ function replyClick(clicked_id)
 function getRandomWord(){
    var array = ["Chinese", "Italian", "Indian", "Turkish", "Mexican", 
                "Thai", "Korean", "Greek", "French", "Steak", "Burgers", "Mediterranian", "Healthy",
-               "Bars", "Soul Food", "Smoothie", "Ice Cream", "Ramen", "BBQ", "Cheap Eats",
+               "Bars", "Best Restaurants", "Soul Food", "Smoothie", "Ice Cream", "Ramen", "BBQ", "Cheap Eats",
                "Sushi", "Pho", "Vietnamese", "Fast Food"];
    randInt = Math.floor(Math.random() * (array.length));
    var item = array[randInt];

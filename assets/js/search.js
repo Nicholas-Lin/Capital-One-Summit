@@ -4,9 +4,11 @@
 * Date: 3/8/20
 * Description: Main javascript for search.html
 */
+
 var currentLocation = getLocation(); //Current user location as a coordinate
 var resultNumber = 0; //Keeps track of the number of results yelp has generated (also used for numbering businesses)
 var searchTerm;
+
 var businesses; //List of businesses from Yelp API
 var customParams; //List of parameters for Yelp API request
 var offset = 20; //Yelp API offset value for requests
@@ -36,7 +38,7 @@ function getLocation() {
     var lng = parseFloat(queries[1]);
     searchTerm = queries[2];
     var currentLocation = { lat: lat, lng: lng };
-    const yelp_api_key = config.YELP_API_KEY
+    const yelp_api_key = 'R-syZbX-nNzwvwOxnV5nQrf1JVgUvHy21QSLfgbGkTG-sm-FBf-WLi1Z8SmyR5AHD1jAndK7BACg9mrv_h4Ff5hE2OnbCEwMvEDESPOaVryyUbmmEGmWZSoIWZPAXnYx';
     //Initial parameters for YelpAPI
     customParams = {
         headers: { 'Authorization': `Bearer ` + yelp_api_key },
@@ -48,6 +50,7 @@ function getLocation() {
         }
     };
     searchTerm = searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1);
+    console.log(searchTerm);
     return currentLocation;
 }
 
