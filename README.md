@@ -11,9 +11,7 @@
 ## Description
 ## [Visit the website here!](hhttps://nicholas-lin.github.io/Capital-One-Summit/)
 
-<img src="screenshots/home-search.jpg" width="33%" title="Search screen"> 
-<img src="screenshots/results.jpg" width="33%" title="Search results screen"> 
-<img src="screenshots/results-map.jpg" width="32%" title="Map screen">
+<img src="screenshots/home-search.jpg" width="33%" title="Search screen"><img src="screenshots/results.jpg" width="33%" title="Search results screen"><img src="screenshots/results-map.jpg" width="32%" title="Map screen">
 
 This is a web application using Yelp's Fusion API to help users pick a restaurant or experience. The app obtains user location via HTML5 Geolocation and plots merchants on a map based on search terms and search rules.
 
