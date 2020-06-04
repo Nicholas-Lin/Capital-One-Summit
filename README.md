@@ -5,13 +5,11 @@
   <h3 align="center">Software Engineering Summit 2020 Challenge</h3>
 </p>
 
-# Capital One Summit 2020 Challenge Winner
-
-## [Visit the website here!](https://nicholas-lin.github.io/Capital-One-Summit/)
+# Crave: Capital One SWE Summit 2020 Challenge Winner
 
 <img src="screenshots/home.png" width="50%" title="Search screen"><img src="screenshots/results.png" width="50%" title="Search results screen">
 
-This is a web application using Yelp's Fusion API to help users pick a restaurant or experience. The app obtains user location via HTML5 Geolocation and plots merchants on a map based on search terms and search rules.
+Crave is a web application that uses Yelp's Fusion API to help users pick a restaurant or experience. The app obtains user location via HTML5 Geolocation and plots merchants on a map based on search terms and search rules.
 
 ## Design
 
